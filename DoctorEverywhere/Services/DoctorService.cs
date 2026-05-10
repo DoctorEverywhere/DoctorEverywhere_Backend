@@ -1,4 +1,5 @@
 ﻿using DoctorEverywhere.DTOs;
+using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Mappings;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,21 @@ namespace DoctorEverywhere.Services
                     Longitude = doctor.Office.Longitude
                 }
             };*/
+        }
+
+        public async Task<List<DoctorDto?>> GetDoctorBySpecialty(int? specialty)
+        {
+            if (specialty == null)
+            {
+                return new List<DoctorDto?>();
+            }
+
+            var doctors = await _context.Doctors
+                .Include(d => d.Office)
+                .Where(d => d.Specialty == (Specialty)specialty)
+                .ToListAsync();
+
+            return doctors.Select(d => d.ToDoctorDto()).ToList();
         }
     }
 }

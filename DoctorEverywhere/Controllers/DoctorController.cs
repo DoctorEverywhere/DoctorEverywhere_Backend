@@ -16,7 +16,7 @@ namespace DoctorEverywhere.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetbyId(int id)
+        public async Task<ActionResult> GetbyId([FromRoute] int id)
         {
             try
             {
@@ -29,7 +29,21 @@ namespace DoctorEverywhere.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); 
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult> GetDoctorBySpecialty([FromQuery] int? specialty)
+        {
+            try
+            {
+                var doctors = await _doctorService.GetDoctorBySpecialty(specialty);
+                return StatusCode(StatusCodes.Status200OK, doctors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }
