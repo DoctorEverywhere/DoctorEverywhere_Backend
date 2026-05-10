@@ -1,4 +1,5 @@
 using DoctorEverywhere;
+using DoctorEverywhere.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -9,6 +10,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options
     .UseSqlServer
         (builder.Configuration.GetConnectionString("DoctorEverywhere"))
     );
+
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

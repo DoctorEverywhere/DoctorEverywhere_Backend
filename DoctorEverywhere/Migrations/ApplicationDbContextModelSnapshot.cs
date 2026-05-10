@@ -116,7 +116,7 @@ namespace DoctorEverywhere.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Doctor", b =>
@@ -147,7 +147,7 @@ namespace DoctorEverywhere.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Manager", b =>
@@ -175,7 +175,7 @@ namespace DoctorEverywhere.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Managers");
+                    b.ToTable("Managers", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Message", b =>
@@ -205,7 +205,7 @@ namespace DoctorEverywhere.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Office", b =>
@@ -246,7 +246,7 @@ namespace DoctorEverywhere.Migrations
                     b.HasIndex("DoctorId")
                         .IsUnique();
 
-                    b.ToTable("Offices");
+                    b.ToTable("Offices", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Patient", b =>
@@ -274,7 +274,7 @@ namespace DoctorEverywhere.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.Review", b =>
@@ -312,7 +312,7 @@ namespace DoctorEverywhere.Migrations
                     b.HasIndex("PatientId", "DoctorId")
                         .IsUnique();
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("DoctorEverywhere.Domain.WorkingSchedule", b =>
@@ -339,7 +339,7 @@ namespace DoctorEverywhere.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("WorkingSchedules");
+                    b.ToTable("WorkingSchedules", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
