@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options
     );
 
 builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
