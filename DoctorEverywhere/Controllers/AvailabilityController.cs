@@ -1,6 +1,7 @@
 ﻿using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -18,6 +19,7 @@ namespace DoctorEverywhere.Controllers
             _availabilityService = availabilityService;
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost("slots")]
         public async Task<IActionResult> CreateorUpdateAvailability([FromBody] List<AvailabilityDto> availabilityDtos)
         {

@@ -26,6 +26,35 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
+        string patientRoleId = "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d";
+        string doctorRoleId = "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e";
+        string managerRoleId = "c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f";
+
+        // 2. Seed the Roles
+        builder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Id = patientRoleId,
+                Name = "Patient",
+                NormalizedName = "PATIENT", // Must be uppercase
+                ConcurrencyStamp = "1" // Ensure unique ConcurrencyStamp
+            },
+            new IdentityRole
+            {
+                Id = doctorRoleId,
+                Name = "Doctor",
+                NormalizedName = "DOCTOR", // Must be uppercase
+                ConcurrencyStamp = "2" // Ensure unique ConcurrencyStamp
+            },
+            new IdentityRole
+            {
+                Id = managerRoleId,
+                Name = "Manager",
+                NormalizedName = "MANAGER", // Must be uppercase
+                ConcurrencyStamp = "3" // Ensure unique ConcurrencyStamp
+            }
+        );
+
         builder.Entity<Doctor>()
             .HasOne(d => d.ApplicationUser)
             .WithOne(u => u.DoctorProfile)
@@ -114,72 +143,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Review>()
             .Property(r => r.Comments)
             .HasMaxLength(1000);
-
-        /* // Seed data for testing
-         // 1. Define static IDs
-         string doctorRoleId = "c85eee14-6340-4840-95c2-db12554843e6";
-         string userId = "d95eee14-6340-4840-95c2-db12554843e5";
-         int doctorId = 1;
-         int officeId = 1;
-
-         // 2. Seed the Doctor Role
-         builder.Entity<IdentityRole>().HasData(new IdentityRole
-         {
-             Id = doctorRoleId,
-             Name = "Doctor",
-             NormalizedName = "DOCTOR"
-         });
-
-         // 3. Seed the Identity User
-         var doctorUser = new ApplicationUser
-         {
-             Id = userId,
-             UserName = "smith",
-             NormalizedUserName = "DR.SMITH@EXAMPLE.COM",
-             Email = "dr.smith@example.com",
-             NormalizedEmail = "DR.SMITH@EXAMPLE.COM",
-             EmailConfirmed = true,
-             SecurityStamp = "3b08e2f0-f9cb-4c2d-8e68-04313b2ce24e",
-             PasswordHash = "AQAAAAIAAYagAAAAEOc1wX1vFkK+9G9I/G+yR7Vv1sZ0xYk2f7m1vU8xR1y7E3b9a7Z2w3e4r5t6y7u8iQ=="
-         };
-
-      *//*   var passwordHasher = new PasswordHasher<ApplicationUser>();
-         doctorUser.PasswordHash = passwordHasher.HashPassword(doctorUser, "SecureDoctor123!");*//*
-
-         builder.Entity<ApplicationUser>().HasData(doctorUser);
-
-         // 4. Assign the User to the Doctor Role
-         builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
-         {
-             RoleId = doctorRoleId,
-             UserId = userId
-         });
-
-         // 5. Seed the Doctor Entity (Link to Identity User via ApplicationUserId)
-         builder.Entity<Doctor>().HasData(new Doctor
-         {
-             Id = doctorId,
-             ApplicationUserId = userId, // Foreign Key linking to ApplicationUser
-             FirstName = "John",
-             LastName = "Smith",
-             Specialty = (Specialty)1 // Replace with actual Enum value, e.g., Specialty.Pediatrics
-
-             // CRITICAL: Do NOT initialize Lists or Navigation properties here. 
-             // e.g., NO 'Office = new Office()' or 'WorkingHours = ...'
-         });
-
-         // 6. Seed the Office Entity (Link to Doctor via DoctorId)
-         builder.Entity<Office>().HasData(new Office
-         {
-             Id = officeId,
-             DoctorId = doctorId, // Foreign Key linking to the Doctor
-             Name = "Smith Medical Associates",
-             Address = "123 Healthway Blvd, Suite 100",
-             City = "Seattle",
-             PostalCode = "98101",
-             Latitude = 47.6062,
-             Longitude = -122.3321
-         });
-     */
     }
 }
