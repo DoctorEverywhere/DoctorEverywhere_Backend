@@ -37,18 +37,39 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+
         ValidIssuer = jwtIssuer,
         ValidAudience = jwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-        RoleClaimType = ClaimTypes.Role
+        RoleClaimType = ClaimTypes.Role,
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey))
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine(context.Exception);
+            return Task.CompletedTask;
+        }
     };
 });
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services
+    .AddIdentityCore<ApplicationUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+});
 
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();

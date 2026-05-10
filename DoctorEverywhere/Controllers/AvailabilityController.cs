@@ -1,8 +1,10 @@
 ﻿using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace DoctorEverywhere.Controllers
@@ -26,7 +28,7 @@ namespace DoctorEverywhere.Controllers
 
             try
             {
-                var userId = "d95eee14-6340-4840-95c2-db12554843e5"; //User.FindFirstValue(ClaimTypes.NameIdentifier); //to-do after authentication is implemented
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await _availabilityService.CreateorUpdateAvailability(userId, availabilityDtos);
                 return StatusCode(StatusCodes.Status200OK);
             }
