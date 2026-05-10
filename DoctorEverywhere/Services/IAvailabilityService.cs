@@ -4,6 +4,6 @@ namespace DoctorEverywhere.Services
 {
     public interface IAvailabilityService
     {
-        public Task CreateAvailability(string userId, List<AvailabilityDto> availabilityDtos);
+        public Task CreateorUpdateAvailability(string userId, List<AvailabilityDto> availabilityDtos);
     }
 }

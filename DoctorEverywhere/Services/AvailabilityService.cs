@@ -13,7 +13,7 @@ namespace DoctorEverywhere.Services
             _context = context;
         }
 
-        public async Task CreateAvailability(string userId, List<AvailabilityDto> availabilityDtos)
+        public async Task CreateorUpdateAvailability(string userId, List<AvailabilityDto> availabilityDtos)
         {
             // 1. Find the Doctor's internal integer Id
             var doctorId = await _context.Doctors
@@ -25,6 +25,13 @@ namespace DoctorEverywhere.Services
             {
                 throw new EntityNotFoundException($"Doctor with user ID {userId} not found.");
             }
+
+            //delete by doctorId
+            var existingSchedules = await _context.WorkingSchedules
+                .Where(ws => ws.DoctorId == doctorId)
+                .ToListAsync();
+
+            _context.WorkingSchedules.RemoveRange(existingSchedules);
 
             // 2. Create the new schedule using the resolved DoctorId
             var newSchedules = availabilityDtos.Select(dto => new WorkingSchedule

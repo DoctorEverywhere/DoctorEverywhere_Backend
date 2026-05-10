@@ -19,13 +19,13 @@ namespace DoctorEverywhere.Controllers
         }
 
         [HttpPost("slots")]
-        public async Task<IActionResult> CreateAvailability([FromBody] List<AvailabilityDto> availabilityDtos)
+        public async Task<IActionResult> CreateorUpdateAvailability([FromBody] List<AvailabilityDto> availabilityDtos)
         {
 
             try
             {
                 var userId = "d95eee14-6340-4840-95c2-db12554843e5"; //User.FindFirstValue(ClaimTypes.NameIdentifier); //to-do after authentication is implemented
-                await _availabilityService.CreateAvailability(userId, availabilityDtos);
+                await _availabilityService.CreateorUpdateAvailability(userId, availabilityDtos);
                 return StatusCode(StatusCodes.Status200OK);
             }
             catch (Exception ex)
