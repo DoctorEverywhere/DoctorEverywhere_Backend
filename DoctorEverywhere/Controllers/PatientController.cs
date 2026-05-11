@@ -1,4 +1,6 @@
-﻿using DoctorEverywhere.Services;
+﻿using DoctorEverywhere.DTOs;
+using DoctorEverywhere.Exceptions;
+using DoctorEverywhere.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,15 +10,37 @@ namespace DoctorEverywhere.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private IPatientService patientService;
+        private IPatientService _patientService;
 
         public PatientController(IPatientService patientService)
         {
-            this.patientService = patientService;
+            _patientService = patientService;
         }
 
-        //[HttpGet]
+        [HttpGet]
 
-        //public async Task<List<PatientDto>>
+        public async Task<List<PatientDto>> Get()
+        {
+            return await _patientService.GetAllPatients();
+        }
+
+        [HttpGet("{id}")] //api/patient/1
+
+        public async Task<ActionResult> GetById(int id)
+        {   
+            try
+            {
+                var patient = await _patientService.GetPatientById(id);
+                return StatusCode(StatusCodes.Status200OK, patient);
+            }
+            catch(EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
