@@ -37,5 +37,36 @@ namespace DoctorEverywhere.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpGet("slots")]
+        public async Task<IActionResult> GetAvailability()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var availability = await _availabilityService.GetAvailability(userId);
+                return StatusCode(StatusCodes.Status200OK, availability);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "Patient")]
+        [HttpGet("doctor/{doctorId}")]
+        public async Task<IActionResult> GetDoctorAvailability([FromRoute] int doctorId, [FromQuery] DateTime date)
+        {
+            try
+            {
+                var availableSlots = await _availabilityService.GetDoctorAvailability(doctorId, date);
+                return StatusCode(StatusCodes.Status200OK, availableSlots);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
