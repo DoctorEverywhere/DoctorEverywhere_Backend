@@ -121,8 +121,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
-        options.WithTitle("DoctorEverywhere API")
-               .WithTheme(ScalarTheme.Mars);
+        options.WithTitle("DoctorEverywhere API");
     });
 }
 
