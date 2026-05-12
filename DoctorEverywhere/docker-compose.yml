@@ -4,11 +4,24 @@
     container_name: DoctorEverywhere
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=P@ssw0rd
+      - SA_PASSWORD=${SQL_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
 
+  rabbitmq:
+    image: rabbitmq:3-management  
+    container_name: rabbit-host
+    ports:
+      - "5672:5672"    
+      - "15672:15672"  
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   sql_data:
+  rabbitmq_data:
