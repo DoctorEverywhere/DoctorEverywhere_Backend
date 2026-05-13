@@ -1,6 +1,3 @@
 <Solution>
-  <Folder Name="/Solution Items/">
-    <File Path=".env" />
-  </Folder>
   <Project Path="DoctorEverywhere.csproj" />
 </Solution>
