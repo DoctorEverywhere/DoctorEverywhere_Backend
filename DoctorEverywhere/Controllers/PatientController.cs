@@ -26,7 +26,7 @@ namespace DoctorEverywhere.Controllers
 
         [HttpGet("{id}")] //api/patient/1
 
-        public async Task<ActionResult> GetById(int id)
+        public async Task<ActionResult> GetPatientById(int id)
         {   
             try
             {
