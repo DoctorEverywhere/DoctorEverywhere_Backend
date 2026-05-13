@@ -39,10 +39,12 @@ namespace DoctorEverywhere.Services
         }
 
         //no safeguard for appointment Id,kapoios mporei na balei appointment id 1 kai bgazei OK
-        /*
-        public async Task<List<AppointmentDto>> GetAppointmentsById(string userId)
+        
+        public async Task<IEnumerable<AppointmentDto>> GetUserAppointments(string userId)
         {
             var appointments = await _context.Appointments
+                .Include(a=> a.Doctor)
+                .Include(a=> a.Patient)
                 .Where(a => 
                 (a.Patient.ApplicationUserId == userId) || (a.Doctor.ApplicationUserId == userId))
                 .OrderByDescending(a => a.StartingAt)
@@ -60,7 +62,7 @@ namespace DoctorEverywhere.Services
                 .ToListAsync();
             return appointments;
         }
-        */
+        
 
         public async Task<AppointmentDto> GetAppointmentById(string userId, int appointmentId)
         {

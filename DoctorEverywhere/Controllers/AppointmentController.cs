@@ -52,15 +52,15 @@ namespace DoctorEverywhere.Controllers
             
         }
 
-        /*
+        
         [Authorize(Roles = "Doctor,Patient")]
-        [HttpGet]
+        [HttpGet("my")]
         public async Task<IActionResult> GetMyAppointments()
         {
            try
            {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var appointments = await _appointmentService.GetAppointmentsById(userId);
+                var appointments = await _appointmentService.GetUserAppointments(userId);
                 return StatusCode(StatusCodes.Status200OK, appointments);
             }
             catch(EntityNotFoundException ex)
@@ -73,7 +73,7 @@ namespace DoctorEverywhere.Controllers
             }
 
         }
-        */
+        
 
         [Authorize(Roles = "Doctor,Patient")]
         [HttpGet("{id:int}")]

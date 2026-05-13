@@ -7,8 +7,8 @@ namespace DoctorEverywhere.Services
     {
         public Task CreateAppointmentAsync(string userId, int doctorId, CreateAppointmentDto dto);
 
-        //public Task<List<AppointmentDto>> GetAppointmentsById(string userId);
+        public Task<IEnumerable<AppointmentDto>> GetUserAppointments(string userId);
 
-        public Task<AppointmentDto> GetAppointmentByIdAsync(string userId, int appointmentId);
+        public Task<AppointmentDto> GetAppointmentById(string userId, int appointmentId);
     }
 }
