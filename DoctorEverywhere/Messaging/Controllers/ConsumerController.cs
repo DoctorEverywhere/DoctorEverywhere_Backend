@@ -8,7 +8,9 @@ using DoctorEverywhere.Messaging.Interfaces;
 
 namespace DoctorEverywhere.Messaging.Controllers
 {
-    public class ConsumerController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ConsumerController : ControllerBase
     {
         private readonly IRabbitMqConsumerService _consumer;    
 
@@ -22,7 +24,7 @@ namespace DoctorEverywhere.Messaging.Controllers
         {
             try
             {
-                var result = await _consumer.ConsumeMessageAsync(id);
+                var result = await _consumer.ConsumeAsync(id);
                 return StatusCode(StatusCodes.Status200OK, result);
             }
             catch (EntityNotFoundException ex)

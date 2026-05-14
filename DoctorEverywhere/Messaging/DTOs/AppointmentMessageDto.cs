@@ -2,9 +2,16 @@
 {
     public class AppointmentMessageDto
     {
-        public string Id { get; set; }
+        public Guid MessageId { get; set; } 
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } 
 
+        public int AppointmentId { get; set; }
+        public int DoctorId { get; set; }
+        public int PatientId { get; set; }
+
+        public DateTime StartingAt { get; set; }
+
+       // public string Type { get; set; } = "AppointmentRequested";
     }
 }

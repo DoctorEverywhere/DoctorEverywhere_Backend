@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
+using Azure.Core;
 using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
+using DoctorEverywhere.Messaging.DTOs;
+using DoctorEverywhere.Messaging.Interfaces;
 using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +24,16 @@ namespace DoctorEverywhere.Controllers
     public class AppointmentController : ControllerBase
     {
         private IAppointmentService _appointmentService;
+        private readonly IRabbitMqProducerService _producerService;
+        private readonly IRabbitMqConsumerService _consumerService;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService,
+            IRabbitMqProducerService producerService,
+            IRabbitMqConsumerService consumerService)
         {
             _appointmentService = appointmentService;
+            _producerService = producerService;
+            _consumerService = consumerService;
         }
 
        
@@ -32,7 +41,7 @@ namespace DoctorEverywhere.Controllers
         [Authorize(Roles = "Patient")]
         [HttpPost("request")]
 
-            public async Task<IActionResult> CreateAppointment(int doctorId, CreateAppointmentDto dto)
+            public async Task<IActionResult> CreateAppointment([FromQuery]int doctorId, [FromBody]CreateAppointmentDto dto)
         {
             //POST /appointments 
             //201 Created
@@ -41,8 +50,25 @@ namespace DoctorEverywhere.Controllers
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                await _appointmentService.CreateAppointmentAsync(userId,doctorId,dto);
-                return StatusCode(StatusCodes.Status200OK);
+                var createdAppointment = await _appointmentService.CreateAppointmentAsync(userId,doctorId,dto);
+
+                var message = new AppointmentMessageDto
+                {
+                    MessageId = Guid.NewGuid(),
+                    CreatedAt = DateTime.UtcNow,
+                    AppointmentId = createdAppointment.Id,
+                    DoctorId = createdAppointment.DoctorId,
+                    PatientId = createdAppointment.PatientId,
+                    StartingAt = createdAppointment.StartingAt,
+                };
+
+                var queueName=$"appointment-{createdAppointment.Id}";
+                await _producerService.PublishAsync(message, queueName);
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (Exception ex)
             {
@@ -61,7 +87,19 @@ namespace DoctorEverywhere.Controllers
            {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var appointments = await _appointmentService.GetUserAppointments(userId);
-                return StatusCode(StatusCodes.Status200OK, appointments);
+                if(User.IsInRole("Patient"))
+                {
+                    return StatusCode(StatusCodes.Status200OK, appointments);
+                }
+
+                // if(userId is null)
+                // {
+                //return StatusCode(StatusCodes.Status200OK, new { appointments, notifications = Array.Empty<AppointmentMessageDto>() });
+                //return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                // }
+                var queueName = $"appointment-{appointments}";
+                var result = await _consumerService.ConsumeAsync(queueName);
+                return StatusCode(StatusCodes.Status200OK, result);
             }
             catch(EntityNotFoundException ex)
             {

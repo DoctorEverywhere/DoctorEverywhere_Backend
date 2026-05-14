@@ -1,6 +1,6 @@
 ﻿namespace DoctorEverywhere.Messaging.Configuration
 {
-    public class RabbitMqSettingsDto
+    public class RabbitMqSettings
     {
         public string HostName { get; set; } = string.Empty;
         public int Port { get; set; }

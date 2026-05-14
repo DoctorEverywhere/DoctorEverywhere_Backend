@@ -1,6 +1,9 @@
-﻿namespace DoctorEverywhere.Messaging.Interfaces
+﻿using DoctorEverywhere.Messaging.DTOs;
+
+namespace DoctorEverywhere.Messaging.Interfaces
 {
-    public class IRabbitMqProducerService
+    public interface IRabbitMqProducerService
     {
+        public Task PublishAsync(AppointmentMessageDto message, string queueName);
     }
 }

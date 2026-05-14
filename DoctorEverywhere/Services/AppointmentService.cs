@@ -16,8 +16,18 @@ namespace DoctorEverywhere.Services
             _context = context;
         }
 
-        public async Task CreateAppointmentAsync(string userId,int doctorId,CreateAppointmentDto dto)
+        public async Task<Appointment> CreateAppointmentAsync(string userId,int doctorId,CreateAppointmentDto dto)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new EntityNotFoundException("User not found");
+            }
+
+            if (doctorId <= 0)
+            {
+                throw new EntityNotFoundException("Doctor not found");
+            }
+
             var patientId = await _context.Patients
                 .Where(p => p.ApplicationUserId == userId)
                 .Select(p => p.Id)
@@ -37,6 +47,8 @@ namespace DoctorEverywhere.Services
 
             await _context.Appointments.AddAsync(newAppointment);
             await _context.SaveChangesAsync();
+
+            return newAppointment;
         }
 
         //no safeguard for appointment Id,kapoios mporei na balei appointment id 1 kai bgazei OK

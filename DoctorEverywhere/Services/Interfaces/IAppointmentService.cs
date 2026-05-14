@@ -5,7 +5,7 @@ namespace DoctorEverywhere.Services.Interfaces
 {
     public interface IAppointmentService
     {
-        public Task CreateAppointmentAsync(string userId, int doctorId, CreateAppointmentDto dto);
+        public Task<Appointment> CreateAppointmentAsync(string userId, int doctorId, CreateAppointmentDto dto);
 
         public Task<IEnumerable<AppointmentDto>> GetUserAppointments(string userId);
 
