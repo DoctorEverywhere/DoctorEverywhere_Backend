@@ -1,6 +1,6 @@
 ﻿using DoctorEverywhere.DTOs;
 
-namespace DoctorEverywhere.Services
+namespace DoctorEverywhere.Services.Interfaces
 {
     public interface IAuthService
     {

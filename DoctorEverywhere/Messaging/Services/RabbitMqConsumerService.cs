@@ -1,0 +1,6 @@
+﻿namespace DoctorEverywhere.Messaging.Services
+{
+    public class RabbitMqConsumerService
+    {
+    }
+}

@@ -2,6 +2,7 @@
 using DoctorEverywhere.Domain;
 using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorEverywhere.Services

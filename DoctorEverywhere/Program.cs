@@ -1,5 +1,6 @@
 using DoctorEverywhere;
 using DoctorEverywhere.Services;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

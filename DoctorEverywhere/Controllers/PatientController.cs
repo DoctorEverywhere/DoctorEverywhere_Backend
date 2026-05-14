@@ -1,6 +1,6 @@
 ﻿using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
-using DoctorEverywhere.Services;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
