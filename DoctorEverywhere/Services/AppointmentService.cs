@@ -111,5 +111,34 @@ namespace DoctorEverywhere.Services
 
             return appointment;
         }
+
+        public async Task<AppointmentDto> UpdateAppointmentStatus(string userId,int appointmentId, UpdateAppointmentStatusDto dto)
+        {
+            var updatedAppointment = await _context.Appointments
+                .Where(a => a.Id == appointmentId &&
+                a.Doctor.ApplicationUserId == userId)
+                .Select(appointment=> new AppointmentDto
+                {
+                    Id = appointment.Id,
+                    DoctorId = appointment.DoctorId,
+                    PatientId = appointment.PatientId,
+                    StartingAt = appointment.StartingAt,
+                    StatusId = dto.StatusId,
+                    RequestedAt = appointment.RequestedAt,
+                    DoctorName = $"{appointment.Doctor.FirstName} {appointment.Doctor.LastName}",
+                    PatientName = $"{appointment.Patient.FirstName} {appointment.Patient.LastName}",
+                })
+                .FirstOrDefaultAsync();
+
+            if (updatedAppointment is null)
+            {
+                throw new EntityNotFoundException("Appointment not found");
+            }
+            
+             await _context.SaveChangesAsync();
+
+             return updatedAppointment;
+
+        }
     }
 }

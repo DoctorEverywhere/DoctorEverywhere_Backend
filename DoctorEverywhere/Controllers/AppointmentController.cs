@@ -36,12 +36,13 @@ namespace DoctorEverywhere.Controllers
             _consumerService = consumerService;
         }
 
-       
+
 
         [Authorize(Roles = "Patient")]
         [HttpPost("request")]
 
-            public async Task<IActionResult> CreateAppointment([FromQuery]int doctorId, [FromBody]CreateAppointmentDto dto) {
+        public async Task<IActionResult> CreateAppointment([FromQuery] int doctorId, [FromBody] CreateAppointmentDto dto)
+        {
             //POST /appointments 
             //201 Created
             //400, 403 (invalid doctor/time), 409 (double booking) 
@@ -49,7 +50,7 @@ namespace DoctorEverywhere.Controllers
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var createdAppointment = await _appointmentService.CreateAppointmentAsync(userId,doctorId,dto);
+                var createdAppointment = await _appointmentService.CreateAppointmentAsync(userId, doctorId, dto);
 
                 var message = new AppointmentMessageDto
                 {
@@ -61,7 +62,7 @@ namespace DoctorEverywhere.Controllers
                     StartingAt = createdAppointment.StartingAt,
                 };
 
-                var queueName=$"appointment-doctor-{createdAppointment.DoctorId}";
+                var queueName = $"appointment-doctor-{createdAppointment.DoctorId}";
                 await _producerService.PublishAsync(message, queueName);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -71,32 +72,32 @@ namespace DoctorEverywhere.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-            
+
         }
 
-        
+
         [Authorize(Roles = "Doctor,Patient")]
         [HttpGet("my")]
         public async Task<IActionResult> GetMyAppointments()
         {
-           try
-           {
+            try
+            {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var appointments = await _appointmentService.GetUserAppointments(userId);
 
-                if(User.IsInRole("Patient"))
+                if (User.IsInRole("Patient"))
                 {
                     return StatusCode(StatusCodes.Status200OK, appointments);
                 }
                 //Otherwise userId is doctor,so we need to consume messages from RabbitMQ
-                
+
                 //grab doctorId from service so the queue names match
                 var doctorId = await _appointmentService.GetDoctorIdForUser(userId);
 
-                if(doctorId == null)
+                if (doctorId == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Doctor profile not found");
                 }
@@ -107,19 +108,19 @@ namespace DoctorEverywhere.Controllers
                 var result = await _consumerService.ConsumeAsync(queueName);
 
                 //return 
-                return StatusCode(StatusCodes.Status200OK, new { appointments,  result });
+                return StatusCode(StatusCodes.Status200OK, new { appointments, result });
             }
-            catch(EntityNotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
-               return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (Exception ex)
             {
-               return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
         }
-        
+
 
         [Authorize(Roles = "Doctor,Patient")]
         [HttpGet("{id:int}")]
@@ -139,6 +140,36 @@ namespace DoctorEverywhere.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [Authorize(Roles = "Doctor")]
+
+        [HttpPatch("{id:int}/status")]
+        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute] int appointmentId, [FromBody] UpdateAppointmentStatusDto dto)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var updatedAppointment = await _appointmentService.UpdateAppointmentStatus (userId, appointmentId, dto);
+                if (updatedAppointment == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
+                }
+                return StatusCode(StatusCodes.Status200OK, updatedAppointment);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
     }
 }

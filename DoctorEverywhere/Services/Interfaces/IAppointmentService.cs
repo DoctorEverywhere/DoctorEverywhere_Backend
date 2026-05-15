@@ -11,5 +11,7 @@ namespace DoctorEverywhere.Services.Interfaces
         public Task<int?> GetDoctorIdForUser(string userId);
 
         public Task<AppointmentDto> GetAppointmentById(string userId, int appointmentId);
+
+        public Task<AppointmentDto> UpdateAppointmentStatus(string userId, int appointmentId, UpdateAppointmentStatusDto dto);
     }
 }
