@@ -114,30 +114,32 @@ namespace DoctorEverywhere.Services
 
         public async Task<AppointmentDto> UpdateAppointmentStatus(string userId,int appointmentId, UpdateAppointmentStatusDto dto)
         {
-            var updatedAppointment = await _context.Appointments
+            var appointment = await _context.Appointments
+                .Include(a => a.Doctor)
+                .Include(a => a.Patient)
                 .Where(a => a.Id == appointmentId &&
-                a.Doctor.ApplicationUserId == userId)
-                .Select(appointment=> new AppointmentDto
-                {
-                    Id = appointment.Id,
-                    DoctorId = appointment.DoctorId,
-                    PatientId = appointment.PatientId,
-                    StartingAt = appointment.StartingAt,
-                    StatusId = dto.StatusId,
-                    RequestedAt = appointment.RequestedAt,
-                    DoctorName = $"{appointment.Doctor.FirstName} {appointment.Doctor.LastName}",
-                    PatientName = $"{appointment.Patient.FirstName} {appointment.Patient.LastName}",
-                })
+                ((a.Patient.ApplicationUserId == userId) || (a.Doctor.ApplicationUserId == userId)))
                 .FirstOrDefaultAsync();
 
-            if (updatedAppointment is null)
+            if (appointment is null)
             {
-                throw new EntityNotFoundException("Appointment not found");
+                throw new EntityNotFoundException("Appointment not found from service");
             }
-            
-             await _context.SaveChangesAsync();
 
-             return updatedAppointment;
+            appointment.StatusId = dto.StatusId;
+            await _context.SaveChangesAsync();
+
+            return new AppointmentDto
+            {
+                Id = appointment.Id,
+                DoctorId = appointment.DoctorId,
+                PatientId = appointment.PatientId,
+                StartingAt = appointment.StartingAt,
+                StatusId = appointment.StatusId,
+                RequestedAt = appointment.RequestedAt,
+                DoctorName = $"{appointment.Doctor.FirstName} {appointment.Doctor.LastName}",
+                PatientName = $"{appointment.Patient.FirstName} {appointment.Patient.LastName}",
+            };
 
         }
     }

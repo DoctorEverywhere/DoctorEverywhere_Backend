@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Azure.Core;
 using DoctorEverywhere.DTOs;
+using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Messaging.DTOs;
 using DoctorEverywhere.Messaging.Interfaces;
@@ -43,9 +44,6 @@ namespace DoctorEverywhere.Controllers
 
         public async Task<IActionResult> CreateAppointment([FromQuery] int doctorId, [FromBody] CreateAppointmentDto dto)
         {
-            //POST /appointments 
-            //201 Created
-            //400, 403 (invalid doctor/time), 409 (double booking) 
 
             try
             {
@@ -107,7 +105,7 @@ namespace DoctorEverywhere.Controllers
                 //Consume messages
                 var result = await _consumerService.ConsumeAsync(queueName);
 
-                //return 
+                //return all appointments for doctor,including notifications about new ones(if there no new messages to consume,null will be returned instead)
                 return StatusCode(StatusCodes.Status200OK, new { appointments, result });
             }
             catch (EntityNotFoundException ex)
@@ -142,20 +140,47 @@ namespace DoctorEverywhere.Controllers
             }
         }
 
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor,Patient")]
 
         [HttpPatch("{id:int}/status")]
-        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute] int appointmentId, [FromBody] UpdateAppointmentStatusDto dto)
+        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute(Name = "id")] int appointmentId, [FromBody] UpdateAppointmentStatusDto dto)
         {
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var updatedAppointment = await _appointmentService.UpdateAppointmentStatus (userId, appointmentId, dto);
-                if (updatedAppointment == null)
+
+                if (User.IsInRole("Patient"))
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
+                    if (dto.StatusId != AppointmentStatus.Cancelled) //Patient is only allowed to cancel
+                    {
+                        return StatusCode(StatusCodes.Status403Forbidden, "You are not allowed to perform this operation");
+                    }
+
+                    var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(userId, appointmentId, dto);
+
+                    if (updatedAppointment == null)
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
+                    }
+                    return StatusCode(StatusCodes.Status200OK, updatedAppointment);
+
                 }
-                return StatusCode(StatusCodes.Status200OK, updatedAppointment);
+                else //You are a doctor,so you can do anything except cancel
+                {
+                    if (dto.StatusId == AppointmentStatus.Cancelled)
+                    {
+                        return StatusCode(StatusCodes.Status403Forbidden, "You are not allowed to cancel an appointment");
+                    }
+                    var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(userId, appointmentId, dto);
+
+                    if (updatedAppointment == null)
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
+                    }
+                    return StatusCode(StatusCodes.Status200OK, updatedAppointment);
+                }
+                    
+                   
             }
             catch (InvalidOperationException ex)
             {
@@ -171,5 +196,36 @@ namespace DoctorEverywhere.Controllers
             }
 
         }
+
+        /*
+        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute(Name = "id")] int appointmentId, [FromBody] UpdateAppointmentStatusDto dto)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(userId, appointmentId, dto);
+                if (updatedAppointment == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
+                }
+                    return StatusCode(StatusCodes.Status200OK, updatedAppointment);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        */
     }
 }
