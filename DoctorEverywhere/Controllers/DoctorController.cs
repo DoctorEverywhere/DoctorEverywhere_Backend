@@ -1,5 +1,6 @@
 ﻿using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Services;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorEverywhere.Controllers

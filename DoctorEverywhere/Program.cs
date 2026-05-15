@@ -1,5 +1,9 @@
 using DoctorEverywhere;
+using DoctorEverywhere.Messaging.Configuration;
+using DoctorEverywhere.Messaging.Interfaces;
+using DoctorEverywhere.Messaging.Services;
 using DoctorEverywhere.Services;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -71,9 +75,14 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 });
 
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
+
+builder.Services.AddSingleton<IRabbitMqProducerService, RabbitMqProducerService>();
+builder.Services.AddSingleton<IRabbitMqConsumerService, RabbitMqConsumerService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 

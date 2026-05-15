@@ -1,6 +1,7 @@
 ﻿using DoctorEverywhere.Domain;
 using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
