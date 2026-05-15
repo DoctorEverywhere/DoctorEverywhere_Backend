@@ -38,10 +38,6 @@ namespace DoctorEverywhere.Messaging.Services
 
         public async Task<AppointmentMessageDto?> ConsumeAsync(string queueName)
         {
-            /*
-                BasicGetAsync:
-                Pulls ONE message manually from queue.
-            */
 
             await _channel.QueueDeclareAsync(
                 queue: queueName,
@@ -51,7 +47,7 @@ namespace DoctorEverywhere.Messaging.Services
                 arguments: null);
 
             var result = await _channel.BasicGetAsync(
-                queue: queueName, //_settings.QueueName,
+                queue: queueName, 
                 autoAck: false
             );
 
@@ -67,11 +63,6 @@ namespace DoctorEverywhere.Messaging.Services
                 // Serialization means to convert an object into that string, and deserialization is its inverse operation (convert string -> object)
                 var message = JsonSerializer.Deserialize<AppointmentMessageDto>(json);
 
-                /*
-                    ACK manually
-                    Removes message from queue
-                */
-
                 await _channel.BasicAckAsync(
                     deliveryTag: result.DeliveryTag,
                     multiple: false
@@ -81,9 +72,6 @@ namespace DoctorEverywhere.Messaging.Services
             }
             catch
             {
-                /*
-                    Return message back to queue
-                */
 
                 await _channel.BasicNackAsync(
                     deliveryTag: result.DeliveryTag,

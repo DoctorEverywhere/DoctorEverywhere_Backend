@@ -18,14 +18,16 @@ namespace DoctorEverywhere.Services
 
         public async Task<Appointment> CreateAppointmentAsync(string userId,int doctorId,CreateAppointmentDto dto)
         {
+            var doctorExists = await _context.Doctors.AnyAsync(d => d.Id == doctorId);
+
             if (string.IsNullOrWhiteSpace(userId))
             {
-                throw new EntityNotFoundException("User not found");
+                throw new EntityNotFoundException($"User with user ID {userId} not found.");
             }
 
-            if (doctorId <= 0)
+            if (doctorId <= 0 || !doctorExists)
             {
-                throw new EntityNotFoundException("Doctor not found");
+                throw new EntityNotFoundException($"Doctor with doctor ID {userId} not found.");
             }
 
             var patientId = await _context.Patients
@@ -35,7 +37,7 @@ namespace DoctorEverywhere.Services
 
             if (patientId == 0)
             {
-                throw new EntityNotFoundException("Patient not found");
+                throw new EntityNotFoundException($"Patient with patient ID {userId} not found.");
             }
 
             var newAppointment = new Appointment
@@ -51,8 +53,15 @@ namespace DoctorEverywhere.Services
             return newAppointment;
         }
 
-        //no safeguard for appointment Id,kapoios mporei na balei appointment id 1 kai bgazei OK
         
+        public async Task<int?> GetDoctorIdForUser(string userId)
+        {
+            return await _context.Doctors
+                .Where(d => d.ApplicationUserId == userId)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+        }
         public async Task<IEnumerable<AppointmentDto>> GetUserAppointments(string userId)
         {
             var appointments = await _context.Appointments

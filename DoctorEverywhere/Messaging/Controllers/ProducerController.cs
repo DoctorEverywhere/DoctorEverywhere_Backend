@@ -1,4 +1,5 @@
-﻿using DoctorEverywhere.Messaging.DTOs;
+﻿/*
+using DoctorEverywhere.Messaging.DTOs;
 using DoctorEverywhere.Messaging.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,3 +41,5 @@ namespace DoctorEverywhere.Messaging.Controllers
         }
     }
 }
+
+*/

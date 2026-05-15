@@ -41,8 +41,7 @@ namespace DoctorEverywhere.Controllers
         [Authorize(Roles = "Patient")]
         [HttpPost("request")]
 
-            public async Task<IActionResult> CreateAppointment([FromQuery]int doctorId, [FromBody]CreateAppointmentDto dto)
-        {
+            public async Task<IActionResult> CreateAppointment([FromQuery]int doctorId, [FromBody]CreateAppointmentDto dto) {
             //POST /appointments 
             //201 Created
             //400, 403 (invalid doctor/time), 409 (double booking) 
@@ -62,7 +61,7 @@ namespace DoctorEverywhere.Controllers
                     StartingAt = createdAppointment.StartingAt,
                 };
 
-                var queueName=$"appointment-{createdAppointment.Id}";
+                var queueName=$"appointment-doctor-{createdAppointment.DoctorId}";
                 await _producerService.PublishAsync(message, queueName);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -87,19 +86,28 @@ namespace DoctorEverywhere.Controllers
            {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var appointments = await _appointmentService.GetUserAppointments(userId);
+
                 if(User.IsInRole("Patient"))
                 {
                     return StatusCode(StatusCodes.Status200OK, appointments);
                 }
+                //Otherwise userId is doctor,so we need to consume messages from RabbitMQ
+                
+                //grab doctorId from service so the queue names match
+                var doctorId = await _appointmentService.GetDoctorIdForUser(userId);
 
-                // if(userId is null)
-                // {
-                //return StatusCode(StatusCodes.Status200OK, new { appointments, notifications = Array.Empty<AppointmentMessageDto>() });
-                //return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-                // }
-                var queueName = $"appointment-{appointments}";
+                if(doctorId == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Doctor profile not found");
+                }
+
+                var queueName = $"appointment-doctor-{doctorId}";
+
+                //Consume messages
                 var result = await _consumerService.ConsumeAsync(queueName);
-                return StatusCode(StatusCodes.Status200OK, result);
+
+                //return 
+                return StatusCode(StatusCodes.Status200OK, new { appointments,  result });
             }
             catch(EntityNotFoundException ex)
             {

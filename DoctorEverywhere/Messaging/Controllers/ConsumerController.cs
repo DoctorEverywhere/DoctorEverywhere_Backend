@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿/*
+using System.Net;
 using DoctorEverywhere.Domain;
 using DoctorEverywhere.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -38,3 +39,5 @@ namespace DoctorEverywhere.Messaging.Controllers
         }
     }
 }
+
+*/
