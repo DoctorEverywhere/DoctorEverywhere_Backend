@@ -1,7 +1,9 @@
 ﻿using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Services;
 using DoctorEverywhere.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DoctorEverywhere.Controllers
 {
@@ -16,6 +18,7 @@ namespace DoctorEverywhere.Controllers
             _doctorService = doctorService;
         }
 
+        [Authorize(Roles = "Doctor, Patient")]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetbyId([FromRoute] int id)
         {
@@ -34,6 +37,7 @@ namespace DoctorEverywhere.Controllers
             }
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet("search")]
         public async Task<ActionResult> GetDoctorBySpecialty([FromQuery] int? specialty)
         {
@@ -41,6 +45,22 @@ namespace DoctorEverywhere.Controllers
             {
                 var doctors = await _doctorService.GetDoctorBySpecialty(specialty);
                 return StatusCode(StatusCodes.Status200OK, doctors);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpGet("me")]
+        public async Task<ActionResult> GetMyProfile()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var doctor = await _doctorService.GetMyProfile(userId);
+                return StatusCode(StatusCodes.Status200OK, doctor);
             }
             catch (Exception ex)
             {

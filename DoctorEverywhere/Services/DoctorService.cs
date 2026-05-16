@@ -61,5 +61,19 @@ namespace DoctorEverywhere.Services
 
             return doctors.Select(d => d.ToDoctorDto()).ToList();
         }
+
+        public async Task<DoctorDto?> GetMyProfile(string userId)
+        {
+            var doctor = await _context.Doctors
+                .Include(d => d.Office)
+                .FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+
+            if (doctor == null)
+            {
+                throw new EntityNotFoundException($"Doctor with User ID {userId} not found.");
+            }
+
+            return doctor.ToDoctorDto();
+        }
     }
 }
