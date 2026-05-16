@@ -75,5 +75,39 @@ namespace DoctorEverywhere.Services
 
             return doctor.ToDoctorDto();
         }
+
+        public async Task DeleteDoctorAsync(string userId)
+        {
+            var doctor = await _context.Doctors
+                .Include(d => d.Office)
+                .Include(d => d.ApplicationUser)
+                .FirstOrDefaultAsync(d => d.ApplicationUserId == userId);
+
+            if (doctor == null)
+            {
+                throw new EntityNotFoundException($"Doctor with User ID {userId} not found.");
+            }
+
+            doctor.FirstName = "Deleted";
+            doctor.LastName ="Doctor";
+            doctor.Specialty = (Specialty)10;
+
+            var randomGuid = Guid.NewGuid().ToString();
+            doctor.ApplicationUser.UserName = $"deleted_doctor_{randomGuid}";
+            doctor.ApplicationUser.NormalizedUserName = $"DELETED_DOCTOR_{randomGuid}".ToUpper();
+            doctor.ApplicationUser.PasswordHash = null;
+
+            if(doctor.Office != null)
+            {
+                doctor.Office.Name = $"Deleted Office {randomGuid}";
+                doctor.Office.Address = "Deleted Address";
+                doctor.Office.City = "Deleted City";
+                doctor.Office.PostalCode = "00000";
+                doctor.Office.Latitude = 0;
+                doctor.Office.Longitude = 0;
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
