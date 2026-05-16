@@ -8,5 +8,7 @@ namespace DoctorEverywhere.Services.Interfaces
 
         public Task<PatientDto> GetPatientById(int id);
 
+        public Task<PatientDto> GetPatientByUserId(string userId);
+
     }
 }
