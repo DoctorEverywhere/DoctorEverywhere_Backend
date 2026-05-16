@@ -49,16 +49,27 @@ namespace DoctorEverywhere.Services
 
         }
 
-        //public async Task<bool> CreatePatient()
-       // {
-        //    Patient patient = new Patient()
-        //    {
-              
-        //    };
+        public async Task<PatientDto> GetPatientByUserId(string userId)
+        {
+            Patient? patient = await _context.Patients
+              .FirstOrDefaultAsync(p => p.ApplicationUserId == userId);
 
-             
-       // }
-            
+            if (patient == null)
+            {
+                throw new EntityNotFoundException($"Patient with ID {userId} not found.");
+            }
+
+            return new PatientDto
+            {
+
+                Id = patient.Id,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+
+            };
+
+        }
+
 
     }
 }
