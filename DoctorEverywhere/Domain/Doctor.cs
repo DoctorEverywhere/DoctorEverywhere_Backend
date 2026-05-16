@@ -15,6 +15,7 @@ public class Doctor
     public string LastName { get; set; }
 
     public Specialty Specialty { get; set; }
+    public bool IsActive { get; set; } = true;
     public Office Office { get; set; }
 
     public ICollection<WorkingSchedule> WorkingHours { get; set; } = new List<WorkingSchedule>();

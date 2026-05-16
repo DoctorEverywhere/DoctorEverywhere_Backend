@@ -2,10 +2,8 @@
 
 namespace DoctorEverywhere.Domain;
 
-/// One customer can make one review to one doctor, you need to add a rating 1-5 in UI
+/// One customer can make one review to one doctor, need to add a rating 1-5 in UI
 /// and a freetext for comments with max 1000 length
-/// IsDeleted is a property for soft delete meaning we do not completely remove the reviews from one site,
-/// we can hide them with this boolean when a customer is deleted
 public class Review
 {
     public int Id { get; set; }

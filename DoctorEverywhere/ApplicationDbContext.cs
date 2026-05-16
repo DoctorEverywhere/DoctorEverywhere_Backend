@@ -143,5 +143,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Review>()
             .Property(r => r.Comments)
             .HasMaxLength(1000);
+
+        builder.Entity<Patient>().HasQueryFilter(p => p.IsActive);
+        builder.Entity<Doctor>().HasQueryFilter(d => d.IsActive);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
+using System.Numerics;
 using System.Security.Claims;
 
 namespace DoctorEverywhere.Services
@@ -87,11 +88,21 @@ namespace DoctorEverywhere.Services
 
             patient.FirstName = "Deleted";
             patient.LastName = "Patient";
+            patient.IsActive = false;
 
             var randomGuid = Guid.NewGuid().ToString();
             patient.ApplicationUser.UserName = $"deleted_patient_{randomGuid}";
             patient.ApplicationUser.NormalizedUserName = $"DELETED_PATIENT_{randomGuid}".ToUpper();
             patient.ApplicationUser.PasswordHash = null;
+
+            var futureAppointments = await _context.Appointments
+            .Where(a => a.PatientId == patient.Id && a.StartingAt > DateTime.UtcNow)
+            .ToListAsync();
+
+            foreach (var appointment in futureAppointments)
+            {
+                appointment.StatusId = AppointmentStatus.Cancelled;
+            }
 
             await _context.SaveChangesAsync();
         }

@@ -1,6 +1,6 @@
 ﻿namespace DoctorEverywhere.Domain;
 
-/// One Patient can book multiple appointments and write multiple reviews
+/// One Patient can book multiple appointments and write one review for each doctor
 
 public class Patient
 {
@@ -11,6 +11,7 @@ public class Patient
 
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public bool IsActive { get; set; } = true;
 
     public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     public ICollection<Review> Reviews { get; set; } = new List<Review>();

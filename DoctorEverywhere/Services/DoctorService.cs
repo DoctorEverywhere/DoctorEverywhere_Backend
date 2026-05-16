@@ -1,4 +1,5 @@
-﻿using DoctorEverywhere.DTOs;
+﻿using DoctorEverywhere.Domain;
+using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Mappings;
@@ -91,6 +92,7 @@ namespace DoctorEverywhere.Services
             doctor.FirstName = "Deleted";
             doctor.LastName ="Doctor";
             doctor.Specialty = (Specialty)10;
+            doctor.IsActive = false;
 
             var randomGuid = Guid.NewGuid().ToString();
             doctor.ApplicationUser.UserName = $"deleted_doctor_{randomGuid}";
@@ -105,6 +107,15 @@ namespace DoctorEverywhere.Services
                 doctor.Office.PostalCode = "00000";
                 doctor.Office.Latitude = 0;
                 doctor.Office.Longitude = 0;
+            }
+
+            var futureAppointments = await _context.Appointments
+            .Where(a => a.DoctorId == doctor.Id && a.StartingAt > DateTime.UtcNow)
+            .ToListAsync();
+
+            foreach (var appointment in futureAppointments)
+            {
+                appointment.StatusId = AppointmentStatus.Rejected; 
             }
 
             await _context.SaveChangesAsync();
