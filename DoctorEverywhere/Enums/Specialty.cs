@@ -11,5 +11,6 @@ public enum Specialty
     Orthopedic = 6,
     Gynecologist = 7,
     Dentist = 8,
-    Ophthalmologist = 9
+    Ophthalmologist = 9,
+    Deleted = 10
 }

@@ -67,5 +67,21 @@ namespace DoctorEverywhere.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpDelete("delete")]
+        public async Task<ActionResult> DeleteDoctor()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _doctorService.DeleteDoctorAsync(userId);
+                return StatusCode(StatusCodes.Status200OK, "Doctor deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
