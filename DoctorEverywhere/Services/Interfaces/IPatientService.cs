@@ -10,5 +10,7 @@ namespace DoctorEverywhere.Services.Interfaces
 
         public Task<PatientDto> GetPatientByUserId(string userId);
 
+        public Task DeletePatientAsync(string userId);
+
     }
 }
