@@ -12,7 +12,6 @@ namespace DoctorEverywhere.Messaging.Services
     {
         private readonly RabbitMqSettings _settings;
         private readonly IConnection _connection;
-        private readonly IChannel _channel;
 
         public RabbitMqProducerService(IOptions<RabbitMqSettings> options)
         {
@@ -27,12 +26,13 @@ namespace DoctorEverywhere.Messaging.Services
             };
 
             _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-            _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
         }
 
         public async Task PublishAsync(AppointmentMessageDto message,string queueName)
         {
-            await _channel.QueueDeclareAsync(
+            using var channel = await _connection.CreateChannelAsync();
+
+            await channel.QueueDeclareAsync(
                 queue: queueName,
                 durable: true,
                 exclusive: false,
@@ -48,7 +48,7 @@ namespace DoctorEverywhere.Messaging.Services
                 Persistent = true
             };
 
-            await _channel.BasicPublishAsync(
+            await channel.BasicPublishAsync(
                 exchange: string.Empty,
                 routingKey: queueName,
                 mandatory:false,
@@ -58,7 +58,6 @@ namespace DoctorEverywhere.Messaging.Services
 
         public void Dispose()
         {
-            _channel?.Dispose();
             _connection?.Dispose();
         }
     }

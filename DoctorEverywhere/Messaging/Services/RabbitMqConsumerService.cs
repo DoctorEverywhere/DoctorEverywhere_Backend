@@ -13,7 +13,6 @@ namespace DoctorEverywhere.Messaging.Services
     {
         private readonly RabbitMqSettings _settings;
         private readonly IConnection _connection;
-        private readonly IChannel _channel;
 
         public RabbitMqConsumerService(IOptions<RabbitMqSettings> options)
         {
@@ -30,23 +29,21 @@ namespace DoctorEverywhere.Messaging.Services
 
 
             _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
-
-            _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
-
-
         }
 
         public async Task<AppointmentMessageDto?> ConsumeAsync(string queueName)
         {
 
-            await _channel.QueueDeclareAsync(
+            using var channel = await _connection.CreateChannelAsync();
+
+            await channel.QueueDeclareAsync(
                 queue: queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
                 arguments: null);
 
-            var result = await _channel.BasicGetAsync(
+            var result = await channel.BasicGetAsync(
                 queue: queueName, 
                 autoAck: false
             );
@@ -63,7 +60,7 @@ namespace DoctorEverywhere.Messaging.Services
                 // Serialization means to convert an object into that string, and deserialization is its inverse operation (convert string -> object)
                 var message = JsonSerializer.Deserialize<AppointmentMessageDto>(json);
 
-                await _channel.BasicAckAsync(
+                await channel.BasicAckAsync(
                     deliveryTag: result.DeliveryTag,
                     multiple: false
                 );
@@ -73,7 +70,7 @@ namespace DoctorEverywhere.Messaging.Services
             catch
             {
 
-                await _channel.BasicNackAsync(
+                await channel.BasicNackAsync(
                     deliveryTag: result.DeliveryTag,
                     multiple: false,
                     requeue: true
@@ -85,8 +82,6 @@ namespace DoctorEverywhere.Messaging.Services
 
         public void Dispose()
         {
-            _channel?.Dispose();
-
             _connection?.Dispose();
         }
 
