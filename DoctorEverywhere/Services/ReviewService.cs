@@ -44,6 +44,7 @@ namespace DoctorEverywhere.Services
         {
             var reviews = await _context.Reviews
                 .Where(r => r.DoctorId == doctorId)
+                .IgnoreQueryFilters()
                 .OrderByDescending(r => r.CreatedAt)
                 .Select(r => new ReviewDto
                 {
