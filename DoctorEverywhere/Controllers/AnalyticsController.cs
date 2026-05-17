@@ -30,7 +30,7 @@ namespace DoctorEverywhere.Controllers
         {
             try
             {
-                var stats = await _analyticsService.GetAppointmentStatusStats();
+                var stats  = await _analyticsService.GetAnalyticsSummary();
                 return StatusCode(StatusCodes.Status200OK, stats);
             }
             catch (Exception ex)
@@ -38,5 +38,7 @@ namespace DoctorEverywhere.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+       
     }
 }

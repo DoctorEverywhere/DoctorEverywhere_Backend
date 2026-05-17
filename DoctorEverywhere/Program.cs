@@ -85,6 +85,7 @@ builder.Services.AddSingleton<IRabbitMqProducerService, RabbitMqProducerService>
 builder.Services.AddSingleton<IRabbitMqConsumerService, RabbitMqConsumerService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

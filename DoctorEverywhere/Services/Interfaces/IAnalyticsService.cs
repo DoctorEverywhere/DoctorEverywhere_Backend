@@ -5,6 +5,9 @@ namespace DoctorEverywhere.Services.Interfaces
 {
     public interface IAnalyticsService
     {
-        public Task<List<AppointmentStatusCountDto>> GetAppointmentStatusStats();
+        public  Task<AnalyticsSummaryDto> GetAnalyticsSummary();
+       // public Task<List<AppointmentStatusCountDto>> GetAppointmentStatusStats();
+
+        //public Task<List<SpecialtyDemandDto>> GetDemandBySpecialty();
     }
 }
