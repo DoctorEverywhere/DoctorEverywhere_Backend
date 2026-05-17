@@ -19,6 +19,7 @@ namespace DoctorEverywhere.Controllers
             _patientService = patientService;
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet]
 
         public async Task<List<PatientDto>> Get()
@@ -26,6 +27,7 @@ namespace DoctorEverywhere.Controllers
             return await _patientService.GetAllPatients();
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpGet("{id}")] //api/patient/1
 
         public async Task<ActionResult> GetPatientById(int id)
