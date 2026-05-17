@@ -179,37 +179,7 @@ namespace DoctorEverywhere.Controllers
                     }
                     return StatusCode(StatusCodes.Status200OK, updatedAppointment);
                 }
-                    
-                   
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
 
-        }
-
-        /*
-        public async Task<IActionResult> UpdateAppointmentStatus([FromRoute(Name = "id")] int appointmentId, [FromBody] UpdateAppointmentStatusDto dto)
-        {
-            try
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(userId, appointmentId, dto);
-                if (updatedAppointment == null)
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Appointment not found");
-                }
-                    return StatusCode(StatusCodes.Status200OK, updatedAppointment);
 
             }
             catch (InvalidOperationException ex)
@@ -226,6 +196,9 @@ namespace DoctorEverywhere.Controllers
             }
 
         }
-        */
+
+        
     }
+        
+    
 }

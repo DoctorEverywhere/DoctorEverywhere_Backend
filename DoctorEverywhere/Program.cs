@@ -26,11 +26,25 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options
     .UseSqlServer
         (builder.Configuration.GetConnectionString("DoctorEverywhere"))
     );
+
+//DbContextFactory is for Task.WhenAll() in summary 
+
+ /* 
+// Add services to the container.
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options
+    .UseSqlServer
+        (builder.Configuration.GetConnectionString("DoctorEverywhere"))
+    );
+
+// Expose a scoped ApplicationDbContext for components (e.g., Identity) that expect it,
+// while keeping the factory (and its options) singleton-safe.
+builder.Services.AddScoped<ApplicationDbContext>(sp =>
+    sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
+*/
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"];
@@ -85,6 +99,7 @@ builder.Services.AddSingleton<IRabbitMqProducerService, RabbitMqProducerService>
 builder.Services.AddSingleton<IRabbitMqConsumerService, RabbitMqConsumerService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
