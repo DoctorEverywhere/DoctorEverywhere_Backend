@@ -5,10 +5,24 @@ DoctorEverywhere is an ASP.NET Core Web API backend for a doctor/patient appoint
 It exposes REST endpoints for authentication, doctor/patient profiles, availability, appointments, reviews, and analytics.
 
 ## Features
-
-- Authentication/Authorization for patient and doctor
-- Dynamic appointment booking with interactive map
+- Authentication
+  - Register as Patient or Doctor
+  - Login with JWT
+- Doctor discovery
+  - Search doctors by specialty
+  - View doctor profile (including office/location details)
+- Availability management
+  - Doctors can create/update working schedule (availability slots)
+  - Patients can view a doctor’s available time slots for a given date
+- Appointments
+  - Patients can request appointments with a doctor
+  - Patients and doctors can view their appointments
+  - Appointment status updates (patient cancellation; doctor confirm/reject/reschedule)
 - Reviews
+  - Patients can leave a rating/comment review for a doctor
+  - Doctors/patients/managers can view doctor reviews
+- Analytics (Manager)
+  - Summary reporting for appointments by status, demand by specialty, and reviews
 
 ## Contributors
 - Maria-Eleni Kosma
