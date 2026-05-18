@@ -25,7 +25,7 @@ namespace DoctorEverywhere.Controllers
         }
 
         [Authorize(Roles = "Manager")]
-        [HttpGet("/summary")]
+        [HttpGet("summary")]
         public async Task<IActionResult> GetAppointmentStatusStats()
         {
             try
