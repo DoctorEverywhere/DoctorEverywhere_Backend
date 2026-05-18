@@ -72,12 +72,15 @@ namespace DoctorEverywhere.Services
 
         public async Task<List<string>> GetDoctorAvailability(int doctorId, DateTime date)
         {
-            var dayOfWeek = (DayOfWeekOption)date.DayOfWeek;
+            int sysDay = (int)date.DayOfWeek;
+            int customDay = sysDay == 0 ? 6 : sysDay - 1; 
+            var dayOfWeek = (DayOfWeekOption)customDay;
 
-            var schedule = await _context.WorkingSchedules
-                .FirstOrDefaultAsync(w => w.DoctorId == doctorId && w.DayOfWeek == dayOfWeek);
+            var schedules = await _context.WorkingSchedules
+                .Where(w => w.DoctorId == doctorId && w.DayOfWeek == dayOfWeek)
+                .ToListAsync();
 
-            if (schedule == null)
+            if (schedules == null || !schedules.Any())
             {
                 return new List<string>();
             }
@@ -90,16 +93,20 @@ namespace DoctorEverywhere.Services
                 .ToListAsync();
 
             var availableSlots = new List<string>();
-            TimeSpan currentSlot = schedule.ShiftStartTime;
+            
             TimeSpan oneHour = TimeSpan.FromHours(1);
-
-            while (currentSlot.Add(oneHour) <= schedule.ShiftEndTime)
+            foreach (var schedule in schedules)
             {
-                if (!bookedTimeSlots.Contains(currentSlot))
+                TimeSpan currentSlot = schedule.ShiftStartTime;
+
+                while (currentSlot.Add(oneHour) <= schedule.ShiftEndTime)
                 {
-                    availableSlots.Add(currentSlot.ToString(@"hh\:mm"));
+                    if (!bookedTimeSlots.Contains(currentSlot))
+                    {
+                        availableSlots.Add(currentSlot.ToString(@"hh\:mm"));
+                    }
+                    currentSlot = currentSlot.Add(oneHour);
                 }
-                currentSlot = currentSlot.Add(oneHour);
             }
 
             return availableSlots;
