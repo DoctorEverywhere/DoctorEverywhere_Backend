@@ -22,7 +22,7 @@ It exposes REST endpoints for authentication, doctor/patient profiles, availabil
   - Patients can leave a rating/comment review for a doctor
   - Doctors/patients/managers can view doctor reviews
 - Analytics (Manager)
-  - Summary reporting for appointments by status, demand by specialty, and reviews
+  - Summary reporting for appointments by status, demand by specialty, and reviews (backend implementation only)
 
 ## Contributors
 - Maria-Eleni Kosma
