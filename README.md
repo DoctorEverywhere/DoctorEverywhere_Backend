@@ -1,7 +1,7 @@
 # DoctorEverywhere
 
 ## Project overview
-DoctorEverywhere is an ASP.NET Core Web API backend for a doctor/patient appointment platform.
+DoctorEverywhere is an ASP.NET Core Web API backend for a location-aware doctor/patient appointment platform.
 It exposes REST endpoints for authentication, doctor/patient profiles, availability, appointments, reviews, and analytics.
 
 ## Features
