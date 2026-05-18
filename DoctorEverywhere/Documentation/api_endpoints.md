@@ -164,7 +164,8 @@ Readable API endpoint map. For request/response payloads, enum mappings, and dat
 ```
  
 - Doctor: object containing `appointments: AppointmentDto[]` and `result` (notification payload)
-``` "result": {
+``` json
+"result": {
     "messageId": "60ee...",
     "createdAt": "2026-05-15T11:48:05.2620683Z",
     "appointmentId": 2004,
