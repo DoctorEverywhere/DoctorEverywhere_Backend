@@ -1,0 +1,61 @@
+# DoctorEverywhere
+
+## Project overview
+DoctorEverywhere is an ASP.NET Core Web API backend for a doctor/patient appointment platform.
+It exposes REST endpoints for authentication, doctor/patient profiles, availability, appointments, reviews, and analytics.
+
+## Features
+
+- Authentication/Authorization for patient and doctor
+- Dynamic appointment booking with interactive map
+- Reviews
+
+## Contributors
+- Maria-Eleni Kosma
+- Dimitrios Loukrezis 
+- Periklis Tsaousis
+- Marios Tzanos
+
+## Tech stack (Backend and Databases)
+- ASP.NET Core Web API + Controllers
+- Entity Framework Core + SQL Server 
+- ASP.NET Core Identity + Roles 
+- JWT Bearer auth 
+- RabbitMQ messaging (producer/consumer services) 
+- Scalar UI for HTTP endpoint testing
+- Docker Compose for local SQL Server and RabbitMQ 
+  
+## Key directories
+- [Controllers/](Controllers) - HTTP API surface (routing, auth attributes, status code mapping)
+- [Services/](Services) - business logic; called by controllers
+- [Services/Interfaces/](Services/Interfaces) - service contracts registered in DI
+- [Domain/](Domain) - EF Core entities (Doctor, Patient, Appointment, etc.)
+- [DTOs/](DTOs) - API request/response DTOs
+- [Mappings/](Mappings) - mapping helpers from entities to DTOs (for Doctor)
+- [Messaging/](Messaging) - RabbitMQ configuration, DTOs, interfaces, services
+- [Migrations/](Migrations) - EF Core migrations
+
+## Essential build/test commands
+From the project root directory (where DoctorEverywhere.csproj is):
+- Restore: `dotnet restore`
+- Build: `dotnet build`
+- Run API: `dotnet run`
+- Apply migrations: `dotnet ef database update`
+
+## Local infrastructure:
+- Create env file and fill in the fields:
+- SQL_PASSWORD= 
+- RABBIT_USER=
+- RABBIT_PASS=
+
+- Start SQL Server + RabbitMQ in project root: `docker compose up -d` 
+
+## Operational notes
+- JWT settings and connection strings live in appsettings.json.
+- Roles are seeded via EF model seeding in ApplicationDbContext.cs.
+- A default Manager user is created at startup by Program.cs calling DbSeeder.cs.
+
+## Additional documentation
+- documentation/architectural_patterns.md - cross-cutting patterns and conventions observed in this codebase
+- documentation/api_endpoints.md - controller-based API endpoint map (routes, auth roles, DTOs)
+- documentation/api_schemas.md - consumer-facing request/response schemas, enums, and conventions
