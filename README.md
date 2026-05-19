@@ -74,6 +74,6 @@ From the project root directory (where DoctorEverywhere.csproj is):
 - A default Manager user,Doctors and Patients are created at startup by DbSeeder and FakeDataSeeder respectively.
 
 ## Additional documentation
-- documentation/architectural_patterns.md - cross-cutting patterns and conventions observed in this codebase
-- documentation/api_endpoints.md - controller-based API endpoint map (routes, auth roles, DTOs)
-- documentation/api_schemas.md - consumer-facing request/response schemas, enums, and conventions
+- ![Architectural Patterns](DoctorEverywhere/Documentation/architectural_patterns.md) - patterns and conventions observed in this codebase
+- ![API documentation](DoctorEverywhere/Documentation/api_endpoints.md) - controller-based API endpoint map (routes, auth roles, DTOs)
+- ![API Schemas](DoctorEverywhere/Documentation/api_schemas.md) - consumer-facing request/response schemas, enums, and conventions
