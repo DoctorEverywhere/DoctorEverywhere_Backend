@@ -241,7 +241,7 @@ Readable API endpoint map. For request/response payloads, enum mappings, and dat
   - Responses: 200 / 404 / 500
 
 ## AnalyticsController
-- `GET /summary`
+- `GET Anaytics/summary`
 	- Auth: Manager
   - Success response: 
 ```json
