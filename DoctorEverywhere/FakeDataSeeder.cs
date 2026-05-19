@@ -36,16 +36,16 @@ namespace DoctorEverywhere
             // ==========================================
             var athensClinics = new List<RealClinicLocation>
             {
-               new RealClinicLocation { Address = "Louizis Riankour 64",      PostalCode = "11523", Latitude = 37.993532, Longitude = 23.766987 }, // Right at Panormou Metro
-               new RealClinicLocation { Address = "Panormou 20",              PostalCode = "11524", Latitude = 37.991667, Longitude = 23.764560 }, // Lower Panormou Street
-               new RealClinicLocation { Address = "Karystou 10",              PostalCode = "11523", Latitude = 37.994812, Longitude = 23.765412 }, // Northern Panormou residential
-               new RealClinicLocation { Address = "Trikalon 5",               PostalCode = "11524", Latitude = 37.992211, Longitude = 23.768520 }, // East of Panormou
-               new RealClinicLocation { Address = "Doukissis Plakentias 45",  PostalCode = "11523", Latitude = 37.995921, Longitude = 23.763456 }, // Near Agios Dimitrios park
-               new RealClinicLocation { Address = "Eslin 15",                 PostalCode = "11523", Latitude = 37.989451, Longitude = 23.762512 }, // Near President Hotel
-               new RealClinicLocation { Address = "Vatopediou 22",            PostalCode = "11523", Latitude = 37.996512, Longitude = 23.761214 }, // Upper Ambelokipi
-               new RealClinicLocation { Address = "Achaias 30",               PostalCode = "11524", Latitude = 37.991124, Longitude = 23.769821 }, // Towards Erythros Stavros
-               new RealClinicLocation { Address = "Trifylias 12",             PostalCode = "11524", Latitude = 37.994112, Longitude = 23.770123 }, // Upper east side of Panormou
-               new RealClinicLocation { Address = "Leoforos Kifisias 118",    PostalCode = "11526", Latitude = 37.989823, Longitude = 23.760124 }  // Kifisias/Panormou Intersection
+               new RealClinicLocation { Address = "Louizis Riankour 64",      PostalCode = "11523", Latitude = 37.992773, Longitude = 23.763951 }, // Right at Panormou Metro
+               new RealClinicLocation { Address = "Panormou 20",              PostalCode = "11524", Latitude = 37.989821, Longitude = 23.758823 }, // Lower Panormou Street
+               new RealClinicLocation { Address = "Karystou 10",              PostalCode = "11523", Latitude = 37.993104, Longitude = 23.762032 }, // Northern Panormou residential
+               new RealClinicLocation { Address = "Trikalon 5",               PostalCode = "11524", Latitude = 37.988371, Longitude = 23.770462 }, // East of Panormou
+               new RealClinicLocation { Address = "Doukissis Plakentias 45",  PostalCode = "11523", Latitude = 37.991556, Longitude = 23.763999 }, // Near Agios Dimitrios park
+               new RealClinicLocation { Address = "Eslin 15",                 PostalCode = "11523", Latitude = 37.987928, Longitude = 23.760476 }, // Near President Hotel
+               new RealClinicLocation { Address = "Vatopediou 22",            PostalCode = "11523", Latitude = 37.979278, Longitude = 23.720340 }, // Upper Ambelokipi
+               new RealClinicLocation { Address = "Achaias 30",               PostalCode = "11524", Latitude = 37.991605, Longitude = 23.762047 }, // Towards Erythros Stavros
+               new RealClinicLocation { Address = "Trifylias 12",             PostalCode = "11524", Latitude = 37.996995, Longitude = 23.762966 }, // Upper east side of Panormou
+               new RealClinicLocation { Address = "Leoforos Kifisias 118",    PostalCode = "11526", Latitude = 37.994957, Longitude = 23.768612 }  // Kifisias/Panormou Intersection
             };
 
             for (int i = 1; i <= 10; i++) // Generating 10 Doctors
