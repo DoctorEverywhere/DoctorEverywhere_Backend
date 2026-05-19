@@ -40,14 +40,14 @@ It exposes REST endpoints for authentication, doctor/patient profiles, availabil
 - Docker Compose for local SQL Server and RabbitMQ 
   
 ## Key directories
-- [Controllers/](Controllers) - HTTP API surface (routing, auth attributes, status code mapping)
-- [Services/](Services) - business logic; called by controllers
-- [Services/Interfaces/](Services/Interfaces) - service contracts registered in DI
-- [Domain/](Domain) - EF Core entities (Doctor, Patient, Appointment, etc.)
-- [DTOs/](DTOs) - API request/response DTOs
-- [Mappings/](Mappings) - mapping helpers from entities to DTOs (for Doctor)
-- [Messaging/](Messaging) - RabbitMQ configuration, DTOs, interfaces, services
-- [Migrations/](Migrations) - EF Core migrations
+- (Controllers) - HTTP API surface (routing, auth attributes, status code mapping)
+- (Services) - business logic; called by controllers
+- (Services/Interfaces) - service contracts registered in DI
+- (Domain) - EF Core entities (Doctor, Patient, Appointment, etc.)
+- (DTOs) - API request/response DTOs
+- (Mappings) - mapping helpers from entities to DTOs (for Doctor)
+- (Messaging) - RabbitMQ configuration, DTOs, interfaces, services
+- (Migrations) - EF Core migrations
 
 ## Essential build/test commands
 From the project root directory (where DoctorEverywhere.csproj is):
@@ -58,9 +58,9 @@ From the project root directory (where DoctorEverywhere.csproj is):
 
 ## Local infrastructure:
 - Create env file and fill in the fields:
-- SQL_PASSWORD= 
-- RABBIT_USER=
-- RABBIT_PASS=
+- `SQL_PASSWORD=` 
+- `RABBIT_USER=`
+- `RABBIT_PASS=`
 
 - Start SQL Server + RabbitMQ in project root: `docker compose up -d` 
 
