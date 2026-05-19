@@ -263,8 +263,6 @@ Readable API endpoint map. For request/response payloads, enum mappings, and dat
   ]
 }
 ```
-
-  - Notes: this endpoint is not prefixed by `/api/analytics`.
   - Responses: 200 / 500
 
 ## Notes
