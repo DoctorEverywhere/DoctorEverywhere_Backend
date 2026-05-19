@@ -173,6 +173,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         await DbSeeder.SeedManagerAsync(services);
+        await FakeDataSeeder.SeedDataAsync(services);
     }
     catch (Exception ex)
     {
