@@ -2,8 +2,6 @@
 
 namespace DoctorEverywhere.Domain;
 
-/// One customer can make one review to one doctor, need to add a rating 1-5 in UI
-/// and a freetext for comments with max 1000 length
 public class Review
 {
     public int Id { get; set; }

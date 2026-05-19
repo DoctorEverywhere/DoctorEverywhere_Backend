@@ -1,5 +1,4 @@
-﻿using DoctorEverywhere.Domain;
-using DoctorEverywhere.Enums;
+﻿using DoctorEverywhere.Enums;
 
 namespace DoctorEverywhere.DTOs
 {

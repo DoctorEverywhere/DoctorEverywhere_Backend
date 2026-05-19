@@ -20,34 +20,8 @@ namespace DoctorEverywhere.Services
             _context = context;
         }
 
-
-        /*
-         * //We're using a DbContextFactory to create new instances of DbContext for each method.
-        //Otherwise, we ran to the issue of having one query finish before the other and attempting to reuse the same context instance,
-        //which is not thread-safe.
-       private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
-
-       public AnalyticsService(IDbContextFactory<ApplicationDbContext> contextFactory)
-       {
-           _contextFactory = contextFactory;
-       }
-       */
         public async Task<AnalyticsSummaryDto> GetAnalyticsSummary()
         {
-            /*
-            var statusCountTask = GetAppointmentStatusStats();
-            var specialtyCountTask = GetAppointmentsBySpecialtyStats();
-            var reviewCountTask = GetReviewSummary();
-
-            await Task.WhenAll(statusCountTask, specialtyCountTask,reviewCountTask);
-
-            return new AnalyticsSummaryDto
-            {
-                AppointmentsByStatusCount = await statusCountTask,
-                DemandBySpecialtyCount = await specialtyCountTask,
-                ReviewsByRatingCount = await reviewCountTask
-            };
-            */
              var statusCountTask = await GetAppointmentStatusStats();
             var specialtyCountTask = await GetAppointmentsBySpecialtyStats();
             var reviewCountTask = await GetReviewSummary();
@@ -75,7 +49,6 @@ namespace DoctorEverywhere.Services
 
         private async Task<List<SpecialtyDemandDto>> GetAppointmentsBySpecialtyStats()
         {
-            // await using var context = await _contextFactory.CreateDbContextAsync();
 
             return await _context.Appointments
                 .AsNoTracking()

@@ -3,7 +3,6 @@ using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorEverywhere.Controllers
@@ -19,7 +18,7 @@ namespace DoctorEverywhere.Controllers
             _patientService = patientService;
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient, Manager")]
         [HttpGet]
 
         public async Task<List<PatientDto>> Get()
@@ -27,7 +26,7 @@ namespace DoctorEverywhere.Controllers
             return await _patientService.GetAllPatients();
         }
 
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient, Manager")]
         [HttpGet("{id}")] //api/patient/1
 
         public async Task<ActionResult> GetPatientById(int id)

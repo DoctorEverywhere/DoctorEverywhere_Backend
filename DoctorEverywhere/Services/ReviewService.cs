@@ -1,6 +1,7 @@
 ﻿using DoctorEverywhere.Domain;
 using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace DoctorEverywhere.Services
         
             var patientId = await _context.Patients
                 .Where(p => p.ApplicationUserId == userId)
-                .Select(p => p.Id) // Only fetch the Id column for performance
+                .Select(p => p.Id)
                 .FirstOrDefaultAsync();
 
             if (patientId == 0)

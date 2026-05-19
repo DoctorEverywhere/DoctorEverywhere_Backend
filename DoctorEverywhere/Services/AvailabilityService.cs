@@ -17,10 +17,9 @@ namespace DoctorEverywhere.Services
 
         public async Task CreateorUpdateAvailability(string userId, List<AvailabilityDto> availabilityDtos)
         {
-            // 1. Find the Doctor's internal integer Id
             var doctorId = await _context.Doctors
                 .Where(d => d.ApplicationUserId == userId)
-                .Select(d => d.Id) // Only fetch the Id column for performance
+                .Select(d => d.Id) 
                 .FirstOrDefaultAsync();
 
             if (doctorId == 0)
@@ -35,7 +34,7 @@ namespace DoctorEverywhere.Services
 
             _context.WorkingSchedules.RemoveRange(existingSchedules);
 
-            // 2. Create the new schedule using the resolved DoctorId
+            //create the new schedule using the resolved DoctorId
             var newSchedules = availabilityDtos.Select(dto => new WorkingSchedule
             {
                 DoctorId = doctorId,
@@ -44,7 +43,6 @@ namespace DoctorEverywhere.Services
                 ShiftEndTime = dto.ShiftEndTime
             }).ToList();
 
-            // 3. Add the entire list to the DbContext at once
             await _context.WorkingSchedules.AddRangeAsync(newSchedules);
             await _context.SaveChangesAsync();
         }
@@ -53,7 +51,7 @@ namespace DoctorEverywhere.Services
         {
             var doctorId = await _context.Doctors
                 .Where(d => d.ApplicationUserId == userId)
-                .Select(d => d.Id) // Only fetch the Id column for performance
+                .Select(d => d.Id)
                 .FirstOrDefaultAsync();
             if (doctorId == 0)
             {

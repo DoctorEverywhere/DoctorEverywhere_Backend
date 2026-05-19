@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Azure.Core;
 using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
@@ -7,16 +6,7 @@ using DoctorEverywhere.Messaging.DTOs;
 using DoctorEverywhere.Messaging.Interfaces;
 using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-
-//POST /appointments 
-//201 Created
-//400, 403 (invalid doctor/time), 409 (double booking) 
-//PATCH /appointments/{id} 
-//200 OK
-//400, 403 (wrong role), 404, 409 (invalid state transition) 
 
 namespace DoctorEverywhere.Controllers
 {

@@ -31,30 +31,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options
         (builder.Configuration.GetConnectionString("DoctorEverywhere"))
     );
 
-//DbContextFactory is for Task.WhenAll() in summary 
-
- /* 
-// Add services to the container.
-builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options
-    .UseSqlServer
-        (builder.Configuration.GetConnectionString("DoctorEverywhere"))
-    );
-
-// Expose a scoped ApplicationDbContext for components (e.g., Identity) that expect it,
-// while keeping the factory (and its options) singleton-safe.
-builder.Services.AddScoped<ApplicationDbContext>(sp =>
-    sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
-*/
-
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"];
 var jwtIssuer = jwtSettings["Issuer"];
 var jwtAudience = jwtSettings["Audience"];
 
-// Configure JWT authentication
 builder.Services.AddAuthentication(options =>
 {
-    // This ensures the app defaults to looking for a JWT Bearer token
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
@@ -110,7 +93,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -149,7 +131,6 @@ builder.Services.AddOpenApi(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

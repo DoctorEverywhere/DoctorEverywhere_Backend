@@ -2,11 +2,6 @@
 using DoctorEverywhere.Domain;
 using DoctorEverywhere.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 namespace DoctorEverywhere
 {
     public static class FakeDataSeeder
@@ -36,16 +31,16 @@ namespace DoctorEverywhere
             // ==========================================
             var athensClinics = new List<RealClinicLocation>
             {
-               new RealClinicLocation { Address = "Louizis Riankour 64",      PostalCode = "11523", Latitude = 37.992773, Longitude = 23.763951 }, // Right at Panormou Metro
-               new RealClinicLocation { Address = "Panormou 20",              PostalCode = "11524", Latitude = 37.989821, Longitude = 23.758823 }, // Lower Panormou Street
-               new RealClinicLocation { Address = "Karystou 10",              PostalCode = "11523", Latitude = 37.993104, Longitude = 23.762032 }, // Northern Panormou residential
-               new RealClinicLocation { Address = "Trikalon 5",               PostalCode = "11524", Latitude = 37.988371, Longitude = 23.770462 }, // East of Panormou
-               new RealClinicLocation { Address = "Doukissis Plakentias 45",  PostalCode = "11523", Latitude = 37.991556, Longitude = 23.763999 }, // Near Agios Dimitrios park
-               new RealClinicLocation { Address = "Eslin 15",                 PostalCode = "11523", Latitude = 37.987928, Longitude = 23.760476 }, // Near President Hotel
-               new RealClinicLocation { Address = "Vatopediou 22",            PostalCode = "11523", Latitude = 37.979278, Longitude = 23.720340 }, // Upper Ambelokipi
-               new RealClinicLocation { Address = "Achaias 30",               PostalCode = "11524", Latitude = 37.991605, Longitude = 23.762047 }, // Towards Erythros Stavros
-               new RealClinicLocation { Address = "Trifylias 12",             PostalCode = "11524", Latitude = 37.996995, Longitude = 23.762966 }, // Upper east side of Panormou
-               new RealClinicLocation { Address = "Leoforos Kifisias 118",    PostalCode = "11526", Latitude = 37.994957, Longitude = 23.768612 }  // Kifisias/Panormou Intersection
+               new RealClinicLocation { Address = "Louizis Riankour 64",      PostalCode = "11523", Latitude = 37.992773, Longitude = 23.763951 }, 
+               new RealClinicLocation { Address = "Panormou 20",              PostalCode = "11524", Latitude = 37.989821, Longitude = 23.758823 }, 
+               new RealClinicLocation { Address = "Karystou 10",              PostalCode = "11523", Latitude = 37.993104, Longitude = 23.762032 }, 
+               new RealClinicLocation { Address = "Trikalon 5",               PostalCode = "11524", Latitude = 37.988371, Longitude = 23.770462 }, 
+               new RealClinicLocation { Address = "Doukissis Plakentias 45",  PostalCode = "11523", Latitude = 37.991556, Longitude = 23.763999 }, 
+               new RealClinicLocation { Address = "Eslin 15",                 PostalCode = "11523", Latitude = 37.987928, Longitude = 23.760476 }, 
+               new RealClinicLocation { Address = "Vatopediou 22",            PostalCode = "11523", Latitude = 37.979278, Longitude = 23.720340 }, 
+               new RealClinicLocation { Address = "Achaias 30",               PostalCode = "11524", Latitude = 37.991605, Longitude = 23.762047 }, 
+               new RealClinicLocation { Address = "Trifylias 12",             PostalCode = "11524", Latitude = 37.996995, Longitude = 23.762966 }, 
+               new RealClinicLocation { Address = "Leoforos Kifisias 118",    PostalCode = "11526", Latitude = 37.994957, Longitude = 23.768612 } 
             };
 
             for (int i = 1; i <= 10; i++) // Generating 10 Doctors
@@ -72,9 +67,8 @@ namespace DoctorEverywhere
                     {
                         Name = $"{faker.Name.LastName()} Clinic",
                         Address = realLocation.Address,
-                        City = "Athens", // Forced Athens location
+                        City = "Athens",
                         PostalCode = realLocation.PostalCode,
-                        // Approximate coordinates for Athens
                         Latitude = realLocation.Latitude,
                         Longitude = realLocation.Longitude
                     },
@@ -158,7 +152,7 @@ namespace DoctorEverywhere
                     "Friendly environment and excellent medical knowledge.",
                     "Listened carefully to all my symptoms. I felt very safe."
                 };
-                // Add ONE review for this doctor/patient combo to respect the unique index
+                // Add ONE review for this doctor/patient combo
                 var review = new Review
                 {
                     PatientId = patient.Id,

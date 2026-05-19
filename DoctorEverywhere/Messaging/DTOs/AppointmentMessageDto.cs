@@ -12,6 +12,5 @@
 
         public DateTime StartingAt { get; set; }
 
-       // public string Type { get; set; } = "AppointmentRequested";
     }
 }

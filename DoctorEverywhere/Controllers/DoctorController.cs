@@ -1,5 +1,4 @@
 ﻿using DoctorEverywhere.Exceptions;
-using DoctorEverywhere.Services;
 using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,7 @@ namespace DoctorEverywhere.Controllers
             _doctorService = doctorService;
         }
 
-        [Authorize(Roles = "Doctor, Patient")]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetbyId([FromRoute] int id)
         {

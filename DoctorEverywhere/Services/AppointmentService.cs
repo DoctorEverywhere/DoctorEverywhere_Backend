@@ -1,6 +1,5 @@
 ﻿using DoctorEverywhere.Domain;
 using DoctorEverywhere.DTOs;
-using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

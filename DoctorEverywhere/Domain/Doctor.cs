@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewEngines;
-using DoctorEverywhere.Enums;
+﻿using DoctorEverywhere.Enums;
 
 namespace DoctorEverywhere.Domain;
 
-/// Can work in one office (one doctor in one office 1-1)
+///can work in one office (one doctor in one office 1-1)
 public class Doctor
 {
     public int Id { get; set; }

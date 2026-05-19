@@ -1,10 +1,7 @@
 ﻿using DoctorEverywhere.DTOs;
-using DoctorEverywhere.Enums;
 using DoctorEverywhere.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace DoctorEverywhere.Controllers

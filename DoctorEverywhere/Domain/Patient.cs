@@ -1,7 +1,5 @@
 ﻿namespace DoctorEverywhere.Domain;
 
-/// One Patient can book multiple appointments and write one review for each doctor
-
 public class Patient
 {
     public int Id { get; set; }

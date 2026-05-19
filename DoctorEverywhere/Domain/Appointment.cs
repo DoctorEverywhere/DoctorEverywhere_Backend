@@ -2,7 +2,6 @@
 
 namespace DoctorEverywhere.Domain;
 
-/// An appointment can be made by a patient to a specific doctor and will have a StartingAt and EndingAt date
 public class Appointment
 {
     public int Id { get; set; }

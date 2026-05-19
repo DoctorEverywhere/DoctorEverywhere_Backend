@@ -1,7 +1,7 @@
 ﻿using DoctorEverywhere.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DoctorEverywhere.Services
+namespace DoctorEverywhere.Services.Interfaces
 {
     public interface IReviewService
     {

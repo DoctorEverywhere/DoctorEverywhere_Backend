@@ -36,22 +36,22 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 Id = patientRoleId,
                 Name = "Patient",
-                NormalizedName = "PATIENT", // Must be uppercase
-                ConcurrencyStamp = "1" // Ensure unique ConcurrencyStamp
+                NormalizedName = "PATIENT", 
+                ConcurrencyStamp = "1" 
             },
             new IdentityRole
             {
                 Id = doctorRoleId,
                 Name = "Doctor",
-                NormalizedName = "DOCTOR", // Must be uppercase
-                ConcurrencyStamp = "2" // Ensure unique ConcurrencyStamp
+                NormalizedName = "DOCTOR",
+                ConcurrencyStamp = "2" 
             },
             new IdentityRole
             {
                 Id = managerRoleId,
                 Name = "Manager",
-                NormalizedName = "MANAGER", // Must be uppercase
-                ConcurrencyStamp = "3" // Ensure unique ConcurrencyStamp
+                NormalizedName = "MANAGER",
+                ConcurrencyStamp = "3" 
             }
         );
 

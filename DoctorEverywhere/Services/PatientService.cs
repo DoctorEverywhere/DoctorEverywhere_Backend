@@ -3,12 +3,7 @@ using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Eventing.Reader;
-using System.Numerics;
-using System.Security.Claims;
 
 namespace DoctorEverywhere.Services
 {

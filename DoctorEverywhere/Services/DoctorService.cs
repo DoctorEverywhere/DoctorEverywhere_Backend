@@ -1,5 +1,4 @@
-﻿using DoctorEverywhere.Domain;
-using DoctorEverywhere.DTOs;
+﻿using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Enums;
 using DoctorEverywhere.Exceptions;
 using DoctorEverywhere.Mappings;
@@ -28,24 +27,7 @@ namespace DoctorEverywhere.Services
             }
 
             return doctor.ToDoctorDto();
-/*
-            return new DoctorDto
-            {
-                Id = doctor.Id,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                Specialty = doctor.Specialty,
-                Office = new OfficeDto
-                {
-                    Id = doctor.Office.Id,
-                    Name = doctor.Office.Name,
-                    Address = doctor.Office.Address,
-                    City = doctor.Office.City,
-                    PostalCode = doctor.Office.PostalCode,
-                    Latitude = doctor.Office.Latitude,
-                    Longitude = doctor.Office.Longitude
-                }
-            };*/
+
         }
 
         public async Task<List<DoctorDto?>> GetDoctorBySpecialty(int? specialty)

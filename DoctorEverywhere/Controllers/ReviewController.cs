@@ -1,6 +1,6 @@
 ﻿using DoctorEverywhere.DTOs;
 using DoctorEverywhere.Exceptions;
-using DoctorEverywhere.Services;
+using DoctorEverywhere.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -35,7 +35,7 @@ namespace DoctorEverywhere.Controllers
             }
         }
 
-        [Authorize(Roles = "Doctor, Patient, Manager")]
+        [Authorize]
         [HttpGet("{doctorId}")]
         public async Task<IActionResult> GetReviews(int doctorId)
         {
