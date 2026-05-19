@@ -1,7 +1,7 @@
-# DoctorEverywhere
+# DoctorEverywhere Backend
 
 ## Project overview
-DoctorEverywhere is an ASP.NET Core Web API backend for a location-aware doctor/patient appointment platform.
+DoctorEverywhere Backend is an ASP.NET Core Web API backend for a location-aware doctor/patient appointment platform.
 It exposes REST endpoints for authentication, doctor/patient profiles, availability, appointments, reviews, and analytics.
 
 ## Features
@@ -17,12 +17,16 @@ It exposes REST endpoints for authentication, doctor/patient profiles, availabil
 - Appointments
   - Patients can request appointments with a doctor
   - Patients and doctors can view their appointments
-  - Appointment status updates (patient cancellation; doctor confirm/reject/reschedule)
+  - Appointment status updates (patient cancellation; doctor confirm/reject)
 - Reviews
   - Patients can leave a rating/comment review for a doctor
   - Doctors/patients/managers can view doctor reviews
 - Analytics (Manager)
   - Summary reporting for appointments by status, demand by specialty, and reviews (backend implementation only)
+- User deletion
+   - Users (Patient/Doctors) can delete their account,
+      - Patient names are marked as "Deleted Patient" in their reviews,and their appointments are auto-cancelled
+      - Doctor appointments are auto-rejected
 
 ## Contributors
 - Maria-Eleni Kosma
@@ -67,7 +71,7 @@ From the project root directory (where DoctorEverywhere.csproj is):
 ## Operational notes
 - JWT settings and connection strings live in appsettings.json.
 - Roles are seeded via EF model seeding in ApplicationDbContext.cs.
-- A default Manager user is created at startup by Program.cs calling DbSeeder.cs.
+- A default Manager user,Doctors and Patients are created at startup by DbSeeder and FakeDataSeeder respectively.
 
 ## Additional documentation
 - documentation/architectural_patterns.md - cross-cutting patterns and conventions observed in this codebase
