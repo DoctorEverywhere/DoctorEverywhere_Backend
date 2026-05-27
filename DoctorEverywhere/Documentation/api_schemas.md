@@ -8,13 +8,36 @@ Send the JWT access token in this header:
 - `Authorization: Bearer <jwt_token>`
 
 ### Roles
-- `Patient`
-- `Doctor`
-- `Manager`
+| Role | Description | Default Credentials |
+|------|-------------|---------------------|
+| **Patient** | Can search doctors, book appointments, leave reviews | Register via API |
+| **Doctor** | Can manage availability, handle appointments, receive notifications | Register via API |
+| **Manager** | Can view analytics and system-wide data | `manager` / `Manager1!!!` (auto-seeded) |
+
+## Domain Model
+
+The core entities and their relationships:
+
+```
+ApplicationUser (ASP.NET Identity)
+    │
+    ├──1:1── Doctor ──1:1── Office (location + coordinates)
+    │            │
+    │            ├──1:N── WorkingSchedule (weekly availability slots)
+    │            ├──1:N── Appointment
+    │            └──1:N── Review
+    │
+    ├──1:1── Patient
+    │            ├──1:N── Appointment
+    │            └──1:N── Review
+    │
+    └──1:1── Manager
+
+Appointment ──1:N── Message (RabbitMQ-persisted notifications)
+```
 
 ### Token details
 - Access tokens expire after 30 minutes.
-- There is no refresh-token endpoint implemented.
 
 ## Data formats
 ### DateTime
@@ -31,35 +54,54 @@ All entity IDs in routes are integers unless stated otherwise.
 ## Enums (serialized as integers)
 ### Specialty
 `Specialty` is sent/returned as an integer with this mapping:
-- 0 = GeneralPractitioner
-- 1 = Cardiologist
-- 2 = Dermatologist
-- 3 = Neurologist
-- 4 = Pediatrician
-- 5 = Psychiatrist
-- 6 = Orthopedic
-- 7 = Gynecologist
-- 8 = Dentist
-- 9 = Ophthalmologist
-- 10 = Deleted
+
+| Value | Name |
+|-------|------|
+| 0 | GeneralPractitioner |
+| 1 | Cardiologist |
+| 2 | Dermatologist |
+| 3 | Neurologist |
+| 4 | Pediatrician |
+| 5 | Psychiatrist |
+| 6 | Orthopedic |
+| 7 | Gynecologist |
+| 8 | Dentist |
+| 9 | Ophthalmologist |
 
 ### AppointmentStatus
 `AppointmentStatus` is sent/returned as an integer with this mapping:
-- 0 = Pending
-- 1 = Confirmed
-- 2 = Cancelled
-- 3 = Rejected
-- 4 = Rescheduled
+| Value | Name | Who can set |
+|-------|------|-------------|
+| 0 | Pending | System (on creation) |
+| 1 | Confirmed | Doctor |
+| 2 | Cancelled | Patient only |
+| 3 | Rejected | Doctor |
+| 4 | Rescheduled | Doctor |
 
 ### DayOfWeekOption
 `DayOfWeekOption` is sent/returned as an integer with this mapping:
-- 0 = Monday
-- 1 = Tuesday
-- 2 = Wednesday
-- 3 = Thursday
-- 4 = Friday
-- 5 = Saturday
-- 6 = Sunday
+
+| Value | Name |
+|-------|------|
+| 0 | Monday |
+| 1 | Tuesday |
+| 2 | Wednesday |
+| 3 | Thursday |
+| 4 | Friday |
+| 5 | Saturday |
+| 6 | Sunday |
+
+## Default Seed Data
+
+On every startup, the application automatically seeds:
+
+- **1 Manager** user (`manager` / `Manager1!!!`) via `DbSeeder`
+- **Sample Doctors** with offices and working schedules via `FakeDataSeeder` (using the [Bogus](https://github.com/bchavez/Bogus) library)
+- **Sample Patients** via `FakeDataSeeder`
+
+Seeding is idempotent — it only inserts data if it does not already exist.
+
+---
 
 ## Standard error responses
 ### Current behavior
