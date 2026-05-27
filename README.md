@@ -239,6 +239,32 @@ https://localhost:{port}/scalar/v1
 | `dotnet ef database update` | Apply pending EF Core migrations |
 | `dotnet ef migrations add <Name>` | Create a new migration |
 
+### Endpoints at a Glance
+
+| Method | Route | Role | Description |
+|--------|-------|------|-------------|
+| `POST` | `/api/auth/register/patient` | Public | Register a new patient |
+| `POST` | `/api/auth/register/doctor` | Public | Register a new doctor |
+| `POST` | `/api/auth/login` | Public | Login and receive JWT token |
+| `GET` | `/api/doctor/{id}` | Doctor, Patient | Get doctor profile by ID |
+| `GET` | `/api/doctor/search?specialty={int}` | Patient | Search doctors by specialty |
+| `GET` | `/api/doctor/me` | Doctor | Get own doctor profile |
+| `DELETE` | `/api/doctor/delete` | Doctor | Delete own account |
+| `GET` | `/api/patient` | Patient | List all patients |
+| `GET` | `/api/patient/{id}` | Patient | Get patient by ID |
+| `GET` | `/api/patient/my` | Patient | Get own patient profile |
+| `DELETE` | `/api/patient/delete` | Patient | Delete own account |
+| `POST` | `/api/appointment/request?doctorId={int}` | Patient | Request an appointment |
+| `GET` | `/api/appointment/my` | Doctor, Patient | Get own appointments (+ RabbitMQ notification for doctors) |
+| `GET` | `/api/appointment/{id}` | Doctor, Patient | Get appointment by ID |
+| `PATCH` | `/api/appointment/{id}/status` | Doctor, Patient | Update appointment status |
+| `POST` | `/api/availability/slots` | Doctor | Create availability slot |
+| `GET` | `/api/availability/slots` | Doctor | Get own availability slots |
+| `GET` | `/api/availability/doctor/{id}?date={DateTime}` | Patient | Get available hours for a doctor |
+| `POST` | `/api/review/{doctorId}` | Patient | Leave a review for a doctor |
+| `GET` | `/api/review/{doctorId}` | Doctor, Patient, Manager | Get reviews for a doctor |
+| `GET` | `/api/analytics/summary` | Manager | Get analytics summary |
+
 ---
 
 ## Additional documentation
