@@ -123,7 +123,7 @@ DoctorEverywhere_Backend/
 └── README.md
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -183,9 +183,6 @@ JWT and RabbitMQ settings are also configured in `appsettings.json`:
   "QueueName": "appointments"
 }
 ```
-
-> [!WARNING]
-> Never commit real secrets to version control. Use user secrets or environment variable overrides in production.
 
 ---
 
