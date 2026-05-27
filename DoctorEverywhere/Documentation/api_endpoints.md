@@ -4,15 +4,18 @@
 Readable API endpoint map. For request/response payloads, enum mappings, and data formats, see:
 - `api_schemas.md`
 
-## HTTP Status Codes Summary
-- 200 OK
-- 201 Created
-- 400 Bad Request (invalid input / request cannot be processed)
-- 401 Unauthorized (missing/invalid/expired token)
-- 403 Forbidden (authenticated but insufficient role)
-- 404 Not Found
-- 409 Conflict (business rule conflict)
-- 500 Internal Server Error
+### HTTP Status Codes
+
+| Code | Meaning |
+|------|---------|
+| `200 OK` | Success |
+| `201 Created` | Resource created |
+| `400 Bad Request` | Invalid input or business rule violation |
+| `401 Unauthorized` | Missing, invalid, or expired token |
+| `403 Forbidden` | Authenticated but insufficient role |
+| `404 Not Found` | Resource not found |
+| `409 Conflict` | Business rule conflict (e.g., invalid status transition) |
+| `500 Internal Server Error` | Unhandled server error |
 
 ## Conventions
 - Base route: `/api/{controller}` via ASP.NET Core `[Route("api/[controller]")]`.
