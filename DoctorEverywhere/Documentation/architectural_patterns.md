@@ -1,5 +1,27 @@
 # Architectural patterns and conventions
 
+```
+┌──────────────────────────────────────────────────────┐
+│                    Angular Frontend                   │
+│               (http://localhost:4200)                 │
+└──────────────────┬───────────────────────────────────┘
+                   │ HTTP + JWT Bearer
+┌──────────────────▼───────────────────────────────────┐
+│              ASP.NET Core Web API                     │
+│                                                       │
+│  Controllers  →  Services  →  EF Core DbContext       │
+│                    ↕                                  │
+│            RabbitMQ Producer/Consumer                 │
+└──────────┬───────────────────────┬────────────────────┘
+           │                       │
+┌──────────▼──────┐    ┌───────────▼──────────┐
+│   SQL Server    │    │      RabbitMQ         │
+│  (port 1433)    │    │  (ports 5672/15672)   │
+└─────────────────┘    └──────────────────────┘
+```
+
+# Layering conventions:
+
 ## Dependency Injection (DI)
 - Services are registered with ASP.NET Core DI in Program.cs.
   - Messaging services are singletons: `IRabbitMqProducerService`, `IRabbitMqConsumerService`.
